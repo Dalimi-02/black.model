@@ -1,5 +1,5 @@
-import subprocess
-subprocess.run(["pip", "list"])
+import os
+os.system("pip install --no-cache-dir seaborn")
 
 import streamlit as st
 import numpy as np
