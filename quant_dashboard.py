@@ -1,5 +1,5 @@
-import sys
-sys.path.append('/home/appuser/.local/lib/python3.12/site-packages')
+import os
+os.system("pip install seaborn --no-cache-dir --user")
 import streamlit as st
 import numpy as np
 import pandas as pd
