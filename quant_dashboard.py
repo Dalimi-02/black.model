@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
-st.set_page_config(page_title="Black-Scholes Pricing Model", layout="wide")
+st.set_page_config(page_title="Black-Scholes Pricing Model",page_icon="📊", layout="wide")
 
 # Title and creator info
 st.title("📊 Black-Scholes Model")
