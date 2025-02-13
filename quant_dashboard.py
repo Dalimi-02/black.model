@@ -42,7 +42,7 @@ col_call, col_put = st.columns(2)
 with col_call:
     st.markdown(f"""
     <div style='background-color: rgba(144, 238, 144, 0.3); padding: 20px; border-radius: 10px;'>
-        <h3 style='text-align: center;'>CALL Value</h3>
+        <h4 style='text-align: center;'>CALL Value</h4>
         <h2 style='text-align: center;'>${call_value}</h2>
     </div>
     """, unsafe_allow_html=True)
@@ -50,7 +50,7 @@ with col_call:
 with col_put:
     st.markdown(f"""
     <div style='background-color: rgba(255, 182, 193, 0.3); padding: 20px; border-radius: 10px;'>
-        <h3 style='text-align: center;'>PUT Value</h3>
+        <h4 style='text-align: center;'>PUT Value</h4>
         <h2 style='text-align: center;'>${put_value}</h2>
     </div>
     """, unsafe_allow_html=True)
@@ -109,7 +109,7 @@ fig = px.imshow(df,
                 x=df.columns,
                 y=df.index,
                 color_continuous_scale='Viridis',
-                title="Beautiful Heatmap")
+                title="Interactive Heatmap")
 
 # Display the heatmap in Streamlit
 st.plotly_chart(fig)
