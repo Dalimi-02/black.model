@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import norm
@@ -21,7 +20,7 @@ r = st.sidebar.number_input("Risk-Free Interest Rate", value=0.05, step=0.01, fo
 
 # Add "Created by" section in the sidebar
 st.sidebar.markdown("Created by:")
-st.sidebar.markdown("[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin&labelColor=blue)](https://www.linkedin.com/in/dalimi-sonowal-701457235/)")
+st.sidebar.markdown("[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin&labelColor=blue)](https://linkedin.com)")
 
 def black_scholes(S, K, T, sigma, r, option_type='call'):
     d1 = (np.log(S/K) + (r + sigma**2/2) * T) / (sigma * np.sqrt(T))
@@ -32,7 +31,7 @@ def black_scholes(S, K, T, sigma, r, option_type='call'):
     else:
         option_price = K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
     
-    return option_price
+    return round(option_price, 2)
 
 # Calculate and display option values
 call_value = black_scholes(S, K, T, sigma, r, 'call')
@@ -76,41 +75,43 @@ for i in range(len(volatilities)):
         Z_call[i,j] = black_scholes(spot_prices[j], K, T, volatilities[i], r, 'call')
         Z_put[i,j] = black_scholes(spot_prices[j], K, T, volatilities[i], r, 'put')
 
-# Plot heatmaps
+# Plot heatmaps using Seaborn
 col_heat1, col_heat2 = st.columns(2)
 
 with col_heat1:
     st.subheader("Call Price Heatmap")
-    fig_call = px.imshow(Z_call,
-                        x=spot_prices,
-                        y=volatilities,
-                        color_continuous_scale='YlOrRd',
-                        labels=dict(x="Spot Price", y="Volatility", color="Price"),
-                        title="Call Option Prices")
-    st.plotly_chart(fig_call)
+    fig_call, ax_call = plt.subplots(figsize=(10, 8))
+    sns.heatmap(Z_call, 
+                xticklabels=[f'{x:.1f}' for x in spot_prices],
+                yticklabels=[f'{y:.2f}' for y in volatilities],
+                cmap='YlOrRd',
+                ax=ax_call,
+                cbar_kws={'label': 'Price'})
+    ax_call.set_xlabel('Spot Price')
+    ax_call.set_ylabel('Volatility')
+    ax_call.set_title('Call Option Prices')
+    plt.tight_layout()
+    st.pyplot(fig_call)
 
 with col_heat2:
     st.subheader("Put Price Heatmap")
-    fig_put = px.imshow(Z_put,
-                        x=spot_prices,
-                        y=volatilities,
-                        color_continuous_scale='YlOrRd',
-                        labels=dict(x="Spot Price", y="Volatility", color="Price"),
-                        title="Put Option Prices")
-    st.plotly_chart(fig_put)
+    fig_put, ax_put = plt.subplots(figsize=(10, 8))
+    sns.heatmap(Z_put, 
+                xticklabels=[f'{x:.1f}' for x in spot_prices],
+                yticklabels=[f'{y:.2f}' for y in volatilities],
+                cmap='YlOrRd',
+                ax=ax_put,
+                cbar_kws={'label': 'Price'})
+    ax_put.set_xlabel('Spot Price')
+    ax_put.set_ylabel('Volatility')
+    ax_put.set_title('Put Option Prices')
+    plt.tight_layout()
+    st.pyplot(fig_put)
 
-# Example data for heatmap
-data = np.random.rand(10, 10)
-df = pd.DataFrame(data, columns=[f'Col {i}' for i in range(10)], index=[f'Row {i}' for i in range(10)])
-
-# Create a heatmap using Plotly
-fig = px.imshow(df, 
-                labels=dict(x="Columns", y="Rows", color="Value"),
-                x=df.columns,
-                y=df.index,
-                color_continuous_scale='Viridis',
-                title="Interactive Heatmap")
-
-# Display the heatmap in Streamlit
-st.plotly_chart(fig)
-
+# Parameter table display
+st.header("Current Parameters")
+param_df = pd.DataFrame({
+    'Parameter': ['Current Asset Price', 'Strike Price', 'Time to Maturity', 'Volatility', 'Risk-Free Rate'],
+    'Value': [S, K, T, sigma, r]
+})
+st.table(param_df)
