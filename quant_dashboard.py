@@ -1,5 +1,5 @@
 import os
-os.system("pip install seaborn")
+os.system("pip install seaborn --no-cache-dir")
 import streamlit as st
 import numpy as np
 import pandas as pd
