@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import norm
@@ -20,7 +21,7 @@ r = st.sidebar.number_input("Risk-Free Interest Rate", value=0.05, step=0.01, fo
 
 # Add "Created by" section in the sidebar
 st.sidebar.markdown("Created by:")
-st.sidebar.markdown("[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin&labelColor=blue)](https://linkedin.com)")
+st.sidebar.markdown("[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin&labelColor=blue)](https://www.linkedin.com/in/dalimi-sonowal-701457235/)")
 
 def black_scholes(S, K, T, sigma, r, option_type='call'):
     d1 = (np.log(S/K) + (r + sigma**2/2) * T) / (sigma * np.sqrt(T))
@@ -31,7 +32,7 @@ def black_scholes(S, K, T, sigma, r, option_type='call'):
     else:
         option_price = K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
     
-    return round(option_price, 2)
+    return option_price
 
 # Calculate and display option values
 call_value = black_scholes(S, K, T, sigma, r, 'call')
@@ -42,7 +43,7 @@ with col_call:
     st.markdown(f"""
     <div style='background-color: rgba(144, 238, 144, 0.3); padding: 20px; border-radius: 10px;'>
         <h4 style='text-align: center;'>CALL Value</h4>
-        <h2 style='text-align: center;'>${call_value}</h2>
+        <h3 style='text-align: center;'>${call_value}</h3>
     </div>
     """, unsafe_allow_html=True)
 
@@ -50,7 +51,7 @@ with col_put:
     st.markdown(f"""
     <div style='background-color: rgba(255, 182, 193, 0.3); padding: 20px; border-radius: 10px;'>
         <h4 style='text-align: center;'>PUT Value</h4>
-        <h2 style='text-align: center;'>${put_value}</h2>
+        <h3 style='text-align: center;'>${put_value}</h3>
     </div>
     """, unsafe_allow_html=True)
 
